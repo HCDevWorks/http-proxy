@@ -1,9 +1,7 @@
-import http from 'http';
 import os from 'os';
 import { Server } from 'proxy-chain';
 
-const HTTP_PORT = Number(process.env.PORT || 80);
-const PROXY_PORT = 8000;
+const PROXY_PORT = 8888;
 
 function getLocalIP(): string | undefined {
   const interfaces = os.networkInterfaces();
@@ -25,12 +23,6 @@ const proxyServer = new Server({
     return {};
   },
 });
-
-const httpServer = http.createServer((req, res) => {
-  res.writeHead(200);
-  res.end(`Proxy running at port ${PROXY_PORT}`);
-});
-httpServer.listen(HTTP_PORT);
 
 proxyServer.listen().then(() => {
   const localIp = getLocalIP();
