@@ -60,14 +60,15 @@ export const startServer = async () => {
           };
         }
 
-        logger.info(`[PROXY] Client ${clientIp} ➔ Destination Host ${host}`);
-
         if (!isHostAllowed(host)) {
           logger.error(`[PROXY] Connection blocked: Client ${clientIp} ➔ Host ${host} is not allowed.`);
+          request.socket.destroy();
           return {
             failMsg: `Connection to "${host}" is not permitted.`,
           };
         }
+
+        logger.info(`[PROXY] Client ${clientIp} ➔ Destination Host ${host}`);
 
         return {};
       } catch (err) {
