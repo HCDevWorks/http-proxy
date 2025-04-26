@@ -13,43 +13,30 @@ const logFormat = format.printf(({ level, message, timestamp }) => {
   return `[${timestamp}] [${level.toUpperCase()}] ${message}`;
 });
 
-const customFilter = format((info) => {
-  const { level } = info;
+const activeTransports = [];
 
-  if (config.enableLogs && !config.enableErrorLogs && level === 'error') {
-    return false;
-  }
-
-  if (!config.enableLogs && config.enableErrorLogs && level !== 'error') {
-    return false;
-  }
-
-  if (!config.enableLogs && !config.enableErrorLogs) {
-    return false;
-  }
-
-  return info;
-});
-
-const allTransports = [];
-
-if (config.enableLogs || config.enableErrorLogs) {
-  allTransports.push(
-    new transports.Console(),
-    new transports.File({ filename: path.join(logsDir, 'proxy.log') })
+if (config.enableLogs) {
+  activeTransports.push(
+    new transports.Console({ level: 'info' }),
+    new transports.File({ filename: path.join(logsDir, 'proxy.log'), level: 'info' })
   );
-} else {
-  allTransports.push(
-    new transports.Stream({ stream: fs.createWriteStream('/dev/null') })
+} else if (config.enableErrorLogs) {
+  activeTransports.push(
+    new transports.Console({ level: 'error' }),
+    new transports.File({ filename: path.join(logsDir, 'proxy.log'), level: 'error' })
   );
 }
 
-export const logger: Logger = createLogger({
-  level: 'silly',
-  format: format.combine(
-    customFilter(),
-    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    logFormat
-  ),
-  transports: allTransports,
-});
+export const logger: Logger = activeTransports.length > 0
+  ? createLogger({
+    level: 'silly',
+    format: format.combine(
+      format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+      logFormat
+    ),
+    transports: activeTransports,
+  })
+  : createLogger({
+    silent: true,
+    transports: [],
+  });

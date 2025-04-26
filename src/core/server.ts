@@ -24,7 +24,6 @@ const isHostAllowed = (host: string) => {
 export const startServer = async () => {
   const server = new Server({
     port: config.port,
-    verbose: config.verbose,
 
     prepareRequestFunction: ({ request }: PrepareRequestFunctionOpts) => {
       try {
