@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "tsx --env-file .env ./src/index.ts",
     "build": "tsc",
-    "start": "node --env-file .env ./dist/index.js"
+    "start": "node --env-file .env ./dist/index.js",
+    "test:proxy": "tsx --env-file .env src/test/testProxy.ts",
+    "test:benchmark": "tsx --env-file .env src/test/testProxyBenchmark.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +22,8 @@
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/node": "^22.15.2",
+    "axios": "^1.9.0",
+    "https-proxy-agent": "^7.0.6",
     "typescript": "^5.8.3"
   }
 }
