@@ -1,7 +1,13 @@
 <h1 align="center"> 🧭 HTTP Proxy Server </h1>
 
 <p align="center">
-  <img src="./docs/static/demo.gif">
+  <img src="../static/demo.gif">
+</p>
+
+<p align="center">
+  <a href="../../README.md">English</a>
+  | 
+  Português
 </p>
 
 Um servidor proxy HTTP robusto e configurável, desenvolvido em TypeScript, com autenticação, controle de acesso por host e registro de logs. Ideal para cenários como bots do Discord, raspagem de dados e controle de tráfego.
