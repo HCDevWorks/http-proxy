@@ -12,12 +12,13 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.6.4",
-  "devDependencies": {
-    "@types/node": "^22.15.2"
-  },
   "dependencies": {
     "proxy-chain": "^2.5.8",
-    "tsx": "^4.19.3",
+    "tsx": "^4.19.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.2",
     "typescript": "^5.8.3"
   }
 }
