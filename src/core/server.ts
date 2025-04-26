@@ -32,6 +32,28 @@ export const startServer = async () => {
         const host = getHostFromRawHeaders(rawHeaders);
         const clientIp = request.socket?.remoteAddress || 'Unknown IP';
 
+        const authorizationHeaderIndex = rawHeaders.findIndex(h => h.toLowerCase() === 'proxy-authorization');
+        if (authorizationHeaderIndex === -1) {
+          logger.error(`[PROXY] Unauthorized access attempt from ${clientIp} (missing credentials).`);
+          return {
+            failMsg: 'Proxy Authentication Required',
+            statusCode: 407,
+          };
+        }
+
+        const authValue = rawHeaders[authorizationHeaderIndex + 1];
+        const encodedCredentials = authValue?.split(' ')[1];
+        const decoded = Buffer.from(encodedCredentials || '', 'base64').toString();
+        const [username, password] = decoded.split(':');
+
+        if (username !== config.proxyUsername || password !== config.proxyPassword) {
+          logger.error(`[PROXY] Unauthorized access attempt from ${clientIp} (invalid credentials).`);
+          return {
+            failMsg: 'Invalid Proxy Authentication',
+            statusCode: 407,
+          };
+        }
+
         if (!host) {
           logger.error(`[PROXY] Client ${clientIp} tried to connect without a Host header.`);
           return {
