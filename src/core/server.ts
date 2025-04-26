@@ -30,18 +30,19 @@ export const startServer = async () => {
       try {
         const rawHeaders = request.rawHeaders;
         const host = getHostFromRawHeaders(rawHeaders);
+        const clientIp = request.socket?.remoteAddress || 'Unknown IP';
 
         if (!host) {
-          logger.error(`Host header not found in the request headers.`);
+          logger.error(`[PROXY] Client ${clientIp} tried to connect without a Host header.`);
           return {
             failMsg: 'Host header is missing in the request.',
           };
         }
 
-        logger.info(`Attempting to connect to host: ${host}`);
+        logger.info(`[PROXY] Client ${clientIp} ➔ Destination Host ${host}`);
 
         if (!isHostAllowed(host)) {
-          logger.error(`Connection blocked: Host "${host}" is not in the allowed list.`);
+          logger.error(`[PROXY] Connection blocked: Client ${clientIp} ➔ Host ${host} is not allowed.`);
           return {
             failMsg: `Connection to "${host}" is not permitted.`,
           };
@@ -49,7 +50,7 @@ export const startServer = async () => {
 
         return {};
       } catch (err) {
-        logger.error(`Error while processing the request: ${(err as Error).message}`);
+        logger.error(`[PROXY] Error while processing the request: ${(err as Error).message}`);
         return {
           failMsg: 'Internal error while processing the request.',
         };
@@ -58,13 +59,12 @@ export const startServer = async () => {
   });
 
   server.listen(() => {
-    logger.info(`Proxy server is running on port ${config.port}`);
+    logger.info(`[PROXY] Proxy server is running on port ${config.port}`);
   });
 
   server.on('requestFailed', (context) => {
     if (context.request && context.request.url) {
-      logger.error(`Request failed for URL: ${context.request.url}`);
+      logger.error(`[PROXY] Request failed for URL: ${context.request.url}`);
     }
   });
-
 };
