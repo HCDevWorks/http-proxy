@@ -14,7 +14,8 @@
   "packageManager": "pnpm@10.6.4",
   "dependencies": {
     "proxy-chain": "^2.5.8",
-    "tsx": "^4.19.3"
+    "tsx": "^4.19.3",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
