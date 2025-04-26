@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { createLogger, format, transports } from 'winston';
+import { config } from '../config/config'; // adicionado
 
 const logsDir = path.join(__dirname, '..', '..', 'logs');
 
@@ -12,14 +13,22 @@ const logFormat = format.printf(({ level, message, timestamp }) => {
   return `[${timestamp}] [${level.toUpperCase()}] ${message}`;
 });
 
+const allTransports = [];
+if (config.enableLogs) {
+  allTransports.push(new transports.Console());
+  allTransports.push(new transports.File({ filename: path.join(logsDir, 'proxy.log') }));
+} else if (config.enableErrorLogs) {
+  allTransports.push(
+    new transports.Console({ level: 'error' }),
+    new transports.File({ filename: path.join(logsDir, 'proxy.log'), level: 'error' })
+  );
+}
+
 export const logger = createLogger({
-  level: 'info',
+  level: config.enableLogs ? 'info' : (config.enableErrorLogs ? 'error' : 'silent'),
   format: format.combine(
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     logFormat
   ),
-  transports: [
-    new transports.Console(),
-    new transports.File({ filename: path.join(logsDir, 'proxy.log') }),
-  ],
+  transports: allTransports,
 });
