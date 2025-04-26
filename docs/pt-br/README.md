@@ -1,6 +1,10 @@
 <h1 align="center"> 🧭 HTTP Proxy Server </h1>
 
-Um servidor proxy HTTP robusto e configurável, desenvolvido em TypeScript, com suporte a autenticação, controle de acesso por host e registro de logs. Ideal para cenários como bots do Discord, raspagem de dados e controle de tráfego.
+<p align="center">
+  <img src="./docs/static/demo.gif">
+</p>
+
+Um servidor proxy HTTP robusto e configurável, desenvolvido em TypeScript, com autenticação, controle de acesso por host e registro de logs. Ideal para cenários como bots do Discord, raspagem de dados e controle de tráfego.
 
 ## 🚀 Recursos
 
@@ -21,13 +25,9 @@ Um servidor proxy HTTP robusto e configurável, desenvolvido em TypeScript, com 
 
 2. Instale as dependências:
 
-```bash
-pnpm build # compila o servidor
-
-and
-
-pnpm start # inicia o servidor
-```
+   ```bash
+   pnpm install
+   ```
 
 3. Configure o arquivo `.env`:
 
@@ -39,15 +39,36 @@ pnpm start # inicia o servidor
    PROXY_PASSWORD=sua_senha
    ```
 
+## 🛡️ Hosts Permitidos
+
+O servidor proxy restringe conexões de saída a uma lista específica de hosts permitidos para segurança e controle.  
+Você pode configurar quais domínios são permitidos editando o array `allowedHosts` em [`src/core/server.ts`](src/core/server.ts):
+
+```typescript
+const allowedHosts = [
+  'discord.com',
+  'youtube.com',
+  'googlevideo.com',
+];
+```
+
+Somente requisições para hosts que incluam uma dessas strings serão permitidas pelo proxy.  
+Para permitir mais domínios, basta adicioná-los ao array.  
+Se um cliente tentar acessar um host não listado, a conexão será bloqueada e registrada no log.
+
 ## 🛠️ Uso
 
 Inicie o servidor proxy com:
 
 ```bash
-pnpm start
+pnpm build # compila o servidor
+
+e então
+
+pnpm start # inicia o servidor
 ```
 
-O servidor estará escutando na porta definida em `PORT` (padrão: 8888).
+O servidor irá escutar na porta definida em `PORT` (padrão: 8888).
 
 ## 📁 Estrutura do Projeto
 
@@ -68,10 +89,6 @@ http-proxy/
     └── pt-br/
         └── README.md       # Documentação em português brasileiro
 ```
-
-## 📚 Documentação em Português
-
-A documentação completa em português brasileiro está disponível em [`/docs/pt-br/README.md`](docs/pt-br/README.md).
 
 ## 🤝 Contribuição
 

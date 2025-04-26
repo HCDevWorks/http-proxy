@@ -1,5 +1,9 @@
 <h1 align="center"> 🧭 HTTP Proxy Server </h1>
 
+<p align="center">
+  <img src="./docs/static/demo.gif">
+</p>
+
 A robust and configurable HTTP proxy server developed in TypeScript, featuring authentication, host access control, and logging. Ideal for scenarios such as Discord bots, data scraping, and traffic control.
 
 ## 🚀 Features
@@ -34,6 +38,23 @@ A robust and configurable HTTP proxy server developed in TypeScript, featuring a
    PROXY_USERNAME=your_username
    PROXY_PASSWORD=your_password
    ```
+
+## 🛡️ Allowed Hosts
+
+The proxy server restricts outgoing connections to a specific list of allowed hosts for security and control.  
+You can configure which domains are permitted by editing the `allowedHosts` array in [`src/core/server.ts`](src/core/server.ts):
+
+```typescript
+const allowedHosts = [
+  'discord.com',
+  'youtube.com',
+  'googlevideo.com',
+];
+```
+
+Only requests targeting hosts that include one of these strings will be allowed through the proxy.  
+To allow more domains, simply add them to the array.  
+If a client tries to access a host not listed, the connection will be blocked and logged.
 
 ## 🛠️ Usage
 
