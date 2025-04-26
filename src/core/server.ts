@@ -33,7 +33,9 @@ export const startServer = async () => {
 
         const authorizationHeaderIndex = rawHeaders.findIndex(h => h.toLowerCase() === 'proxy-authorization');
         if (authorizationHeaderIndex === -1) {
-          logger.error(`[PROXY] Unauthorized access attempt from ${clientIp} (missing credentials).`);
+          if (config.enableErrorLogs) {
+            logger.error(`[PROXY] Unauthorized access attempt from ${clientIp} (missing credentials).`);
+          }
           return {
             failMsg: 'Proxy Authentication Required',
             statusCode: 407,
@@ -46,7 +48,9 @@ export const startServer = async () => {
         const [username, password] = decoded.split(':');
 
         if (username !== config.proxyUsername || password !== config.proxyPassword) {
-          logger.error(`[PROXY] Unauthorized access attempt from ${clientIp} (invalid credentials).`);
+          if (config.enableErrorLogs) {
+            logger.error(`[PROXY] Unauthorized access attempt from ${clientIp} (invalid credentials).`);
+          }
           return {
             failMsg: 'Invalid Proxy Authentication',
             statusCode: 407,
@@ -54,16 +58,22 @@ export const startServer = async () => {
         }
 
         if (!host) {
-          logger.error(`[PROXY] Client ${clientIp} tried to connect without a Host header.`);
+          if (config.enableErrorLogs) {
+            logger.error(`[PROXY] Client ${clientIp} tried to connect without a Host header.`);
+          }
           return {
             failMsg: 'Host header is missing in the request.',
           };
         }
 
-        logger.info(`[PROXY] Client ${clientIp} ➔ Destination Host ${host}`);
+        if (config.enableLogs) {
+          logger.info(`[PROXY] Client ${clientIp} ➔ Destination Host ${host}`);
+        }
 
         if (!isHostAllowed(host)) {
-          logger.error(`[PROXY] Connection blocked: Client ${clientIp} ➔ Host ${host} is not allowed.`);
+          if (config.enableErrorLogs) {
+            logger.error(`[PROXY] Connection blocked: Client ${clientIp} ➔ Host ${host} is not allowed.`);
+          }
           return {
             failMsg: `Connection to "${host}" is not permitted.`,
           };
@@ -71,7 +81,9 @@ export const startServer = async () => {
 
         return {};
       } catch (err) {
-        logger.error(`[PROXY] Error while processing the request: ${(err as Error).message}`);
+        if (config.enableErrorLogs) {
+          logger.error(`[PROXY] Error while processing the request: ${(err as Error).message}`);
+        }
         return {
           failMsg: 'Internal error while processing the request.',
         };
@@ -80,11 +92,13 @@ export const startServer = async () => {
   });
 
   server.listen(() => {
-    logger.info(`[PROXY] Proxy server is running on port ${config.port}`);
+    if (config.enableLogs) {
+      logger.info(`[PROXY] Proxy server is running on port ${config.port}`);
+    }
   });
 
   server.on('requestFailed', (context) => {
-    if (context.request && context.request.url) {
+    if (context.request && context.request.url && config.enableErrorLogs) {
       logger.error(`[PROXY] Request failed for URL: ${context.request.url}`);
     }
   });
