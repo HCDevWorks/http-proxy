@@ -45,24 +45,7 @@ Um servidor proxy HTTP robusto e configurável, desenvolvido em TypeScript, com 
    PROXY_PASSWORD=sua_senha
    ALLOWED_HOSTS='google.com','youtube.com'
    ```
-
-## 🛡️ Hosts Permitidos
-
-O servidor proxy restringe conexões de saída a uma lista específica de hosts permitidos para segurança e controle.  
-Você pode configurar quais domínios são permitidos editando o array `allowedHosts` em [`src/core/server.ts`](src/core/server.ts):
-
-```typescript
-const allowedHosts = [
-  'discord.com',
-  'youtube.com',
-  'googlevideo.com',
-];
-```
-
-Somente requisições para hosts que incluam uma dessas strings serão permitidas pelo proxy.  
-Para permitir mais domínios, basta adicioná-los ao array.  
-Se um cliente tentar acessar um host não listado, a conexão será bloqueada e registrada no log.
-
+   
 ## 🛠️ Uso
 
 Inicie o servidor proxy com:
@@ -83,18 +66,21 @@ O servidor irá escutar na porta definida em `PORT` (padrão: 8888).
 http-proxy/
 ├── src/
 │   ├── config/
-│   │   └── config.ts       # Carrega as variáveis de ambiente
+│   │   └── config.ts       # Carrega variáveis de ambiente
 │   ├── logger/
-│   │   └── logger.ts       # Configuração do Winston
+│   │   └── logger.ts       # Configuração do logger Winston
 │   └── server/
 │       └── server.ts       # Lógica principal do servidor proxy
+├── tests/                  # Testes do proxy e de benchmark
+│   ├── testProxy.ts
+│   └── testProxyBenchmark.ts
 ├── .env                    # Variáveis de ambiente
 ├── package.json
 ├── pnpm-lock.yaml
 ├── tsconfig.json
 └── docs/
-    └── pt-br/
-        └── README.md       # Documentação em português brasileiro
+  └── pt-br/
+    └── README.md       # Documentação em português brasileiro
 ```
 
 ## 🤝 Contribuição

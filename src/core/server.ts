@@ -2,11 +2,6 @@ import { PrepareRequestFunctionOpts, Server } from 'proxy-chain';
 import { config } from '../config/config';
 import { logger } from './logger';
 
-const allowedHosts = (process.env.ALLOWED_HOSTS || '')
-  .split(',')
-  .map(h => h.trim().toLowerCase())
-  .filter(Boolean);
-
 const getHostFromRawHeaders = (rawHeaders: string[] = []): string | null => {
   for (let i = 0; i < rawHeaders.length; i += 2) {
     if (rawHeaders[i].toLowerCase() === 'host') {
@@ -17,7 +12,7 @@ const getHostFromRawHeaders = (rawHeaders: string[] = []): string | null => {
 };
 
 const isHostAllowed = (host: string) => {
-  return allowedHosts.some(allowed => host.includes(allowed));
+  return config.allowedHosts.some(allowed => host.includes(allowed));
 };
 
 export const startServer = async () => {
