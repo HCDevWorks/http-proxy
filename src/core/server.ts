@@ -2,11 +2,10 @@ import { PrepareRequestFunctionOpts, Server } from 'proxy-chain';
 import { config } from '../config/config';
 import { logger } from './logger';
 
-const allowedHosts = [
-  'discord.com',
-  'youtube.com',
-  'googlevideo.com',
-];
+const allowedHosts = (process.env.ALLOWED_HOSTS || '')
+  .split(',')
+  .map(h => h.trim().toLowerCase())
+  .filter(Boolean);
 
 const getHostFromRawHeaders = (rawHeaders: string[] = []): string | null => {
   for (let i = 0; i < rawHeaders.length; i += 2) {
