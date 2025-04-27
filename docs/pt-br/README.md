@@ -62,8 +62,7 @@ O servidor irá escutar na porta definida em `PORT` (padrão: 8888).
 
 ## 🖥️ Rodando como serviço no Linux
 
-Veja como criar um serviço systemd para rodar o proxy automaticamente no Linux em [`docs/linux-service.md`](./docs/linux-service.md).
-
+Veja como criar um serviço systemd para rodar o proxy automaticamente no Linux em [`LINUX-SERVICE.md`](./LINUX-SERVICE.md).
 ## 📁 Estrutura do Projeto
 
 ```
