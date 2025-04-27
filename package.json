@@ -7,8 +7,8 @@
     "dev": "tsx --env-file .env ./src/index.ts",
     "build": "tsc",
     "start": "node --env-file .env ./dist/index.js",
-    "test:proxy": "tsx --env-file .env src/test/testProxy.ts",
-    "test:benchmark": "tsx --env-file .env src/test/testProxyBenchmark.ts"
+    "test:proxy": "tsx --env-file .env tests/testProxy.ts",
+    "test:benchmark": "tsx --env-file .env tests/testProxyBenchmark.ts"
   },
   "keywords": [],
   "author": "",

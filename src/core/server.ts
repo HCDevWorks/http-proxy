@@ -2,11 +2,10 @@ import { PrepareRequestFunctionOpts, Server } from 'proxy-chain';
 import { config } from '../config/config';
 import { logger } from './logger';
 
-const allowedHosts = [
-  'discord.com',
-  'youtube.com',
-  'googlevideo.com',
-];
+const allowedHosts = (process.env.ALLOWED_HOSTS || '')
+  .split(',')
+  .map(h => h.trim().toLowerCase())
+  .filter(Boolean);
 
 const getHostFromRawHeaders = (rawHeaders: string[] = []): string | null => {
   for (let i = 0; i < rawHeaders.length; i += 2) {
@@ -60,14 +59,15 @@ export const startServer = async () => {
           };
         }
 
-        logger.info(`[PROXY] Client ${clientIp} ➔ Destination Host ${host}`);
-
         if (!isHostAllowed(host)) {
           logger.error(`[PROXY] Connection blocked: Client ${clientIp} ➔ Host ${host} is not allowed.`);
+          request.socket.destroy();
           return {
             failMsg: `Connection to "${host}" is not permitted.`,
           };
         }
+
+        logger.info(`[PROXY] Client ${clientIp} ➔ Destination Host ${host}`);
 
         return {};
       } catch (err) {
