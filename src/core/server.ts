@@ -10,7 +10,7 @@ const allowedHosts = (process.env.ALLOWED_HOSTS || '')
 const getHostFromRawHeaders = (rawHeaders: string[] = []): string | null => {
   for (let i = 0; i < rawHeaders.length; i += 2) {
     if (rawHeaders[i].toLowerCase() === 'host') {
-      return rawHeaders[i + 1];
+      return rawHeaders[i + 1].toLowerCase();
     }
   }
   return null;
@@ -68,7 +68,6 @@ export const startServer = async () => {
         }
 
         logger.info(`[PROXY] Client ${clientIp} ➔ Destination Host ${host}`);
-
         return {};
       } catch (err) {
         logger.error(`[PROXY] Error while processing the request: ${(err as Error).message}`);
