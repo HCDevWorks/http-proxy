@@ -43,6 +43,7 @@ A robust and configurable HTTP proxy server developed in TypeScript, featuring a
    ENABLE_ERROR_LOGS=false
    PROXY_USERNAME=your_username
    PROXY_PASSWORD=your_password
+   ALLOWED_HOSTS='google.com','youtube.com'
    ```
 ## 🛠️ Usage
 
