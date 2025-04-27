@@ -59,6 +59,10 @@ pnpm start # start the server
 
 The server will listen on the port defined in `PORT` (default: 8888).
 
+## 🖥️ Running as a Linux Service
+
+See how to create a systemd service to run the proxy automatically on Linux in [`docs/linux-service.md`](./docs/linux-service.md).
+
 ## 📁 Project Structure
 
 ```
