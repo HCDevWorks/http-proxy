@@ -8,6 +8,7 @@ out/
 
 # Environment variables
 .env
+config.toml
 
 # Logs
 logs/

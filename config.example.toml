@@ -1,0 +1,13 @@
+[server]
+port = 8888
+
+[logging]
+enableLogs = true
+enableErrorLogs = false
+
+[auth]
+username = "proxyuser"
+password = "proxypass"
+
+[allowed_hosts]
+hosts = ["google.com"]

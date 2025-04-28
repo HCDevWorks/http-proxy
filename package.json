@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx --env-file .env ./src/index.ts",
+    "dev": "tsx ./src/index.ts",
     "build": "tsc",
-    "start": "node --env-file .env ./dist/index.js",
-    "test:proxy": "tsx --env-file .env tests/testProxy.ts",
-    "test:benchmark": "tsx --env-file .env tests/testProxyBenchmark.ts"
+    "start": "node ./dist/index.js",
+    "test:proxy": "tsx tests/testProxy.ts",
+    "test:benchmark": "tsx tests/testProxyBenchmark.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
   "packageManager": "pnpm@10.6.4",
   "dependencies": {
     "proxy-chain": "^2.5.8",
+    "smol-toml": "^1.3.4",
     "tsx": "^4.19.3",
     "winston": "^3.17.0"
   },
