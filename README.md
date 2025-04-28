@@ -88,7 +88,11 @@ http-proxy/
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to open issues or pull requests.
+Contributions are welcome! Please read our [Code of Conduct](./CODE_OF_CONDUCT.md) and [Contributing Guidelines](./CONTRIBUTING.md) before opening issues or pull requests.
+
+We also provide templates to help you:
+- [Issue Template](./.github/ISSUE_TEMPLATE.md)
+- [Pull Request Template](./.github/PULL_REQUEST_TEMPLATE.MD)
 
 ## 📄 License
 
