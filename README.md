@@ -14,10 +14,10 @@ A robust and configurable HTTP proxy server developed in TypeScript, featuring a
 
 ## 🚀 Features
 
-- 🔐 Basic authentication via `.env`
+- 🔐 Basic authentication via `config.toml`
 - 🌐 Host access control
 - 📄 Logging with Winston
-- ⚙️ Configuration via environment variables
+- ⚙️ Configuration via `config.toml`
 - 🧪 Modular and extensible structure
 
 ## 📦 Installation
@@ -35,16 +35,24 @@ A robust and configurable HTTP proxy server developed in TypeScript, featuring a
    pnpm install
    ```
 
-3. Configure the `.env` file:
+3. Configure the `config.toml` file (see `config.example.toml` for an example):
 
-   ```env
-   PORT=8888
-   ENABLE_LOGS=true
-   ENABLE_ERROR_LOGS=false
-   PROXY_USERNAME=your_username
-   PROXY_PASSWORD=your_password
-   ALLOWED_HOSTS='google.com','youtube.com'
+   ```toml
+   [server]
+   port = 8888
+
+   [logging]
+   enableLogs = true
+   enableErrorLogs = false
+
+   [auth]
+   username = "your_username"
+   password = "your_password"
+
+   [allowed_hosts]
+   hosts = ["google.com", "youtube.com"]
    ```
+
 ## 🛠️ Usage
 
 Start the proxy server with:
@@ -52,12 +60,10 @@ Start the proxy server with:
 ```bash
 pnpm build # build the server
 
-and
-
 pnpm start # start the server
 ```
 
-The server will listen on the port defined in `PORT` (default: 8888).
+The server will listen on the port defined in `config.toml` (default: 8888).
 
 ## 🖥️ Running as a Linux Service
 
@@ -69,21 +75,26 @@ See how to create a systemd service to run the proxy automatically on Linux in [
 http-proxy/
 ├── src/
 │   ├── config/
-│   │   └── config.ts       # Loads environment variables
-│   ├── logger/
-│   │   └── logger.ts       # Winston logger configuration
-│   └── server/
-│       └── server.ts       # Main proxy server logic
-├── tests/                  # Proxy and benchmark tests
+│   │   ├── config.ts         # Loads configuration from config.toml
+│   │   └── loadConfig.ts     # Loads and validates config.toml
+│   ├── core/
+│   │   ├── logger.ts         # Winston logger configuration
+│   │   └── server.ts         # Main proxy server logic
+│   └── types/
+│       └── config.d.ts       # Type definitions for config
+├── tests/                    # Proxy and benchmark tests
 │   ├── testProxy.ts
 │   └── testProxyBenchmark.ts
-├── .env                    # Environment variables
+├── config.toml               # Main configuration file
+├── config.example.toml       # Example configuration file
+├── logs/                     # Log files
+│   └── proxy.log
 ├── package.json
 ├── pnpm-lock.yaml
 ├── tsconfig.json
 └── docs/
     └── pt-br/
-        └── README.md       # Documentation in Brazilian Portuguese
+        └── README.md         # Documentation in Brazilian Portuguese
 ```
 
 ## 🤝 Contributing
