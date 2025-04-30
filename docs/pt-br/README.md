@@ -17,8 +17,11 @@ Um servidor proxy HTTP robusto e configurável, desenvolvido em TypeScript, com 
 - 🔐 Autenticação básica via `config.toml`
 - 🌐 Controle de acesso por host
 - 📄 Registro de logs com Winston
-- ⚙️ Configuração via `config.toml`
+- ⚙️ **Toda a configuração é carregada exclusivamente do `config.toml`**
 - 🧪 Estrutura modular e extensível
+
+> **Atenção:**  
+> Toda a configuração é centralizada no arquivo [`config.toml`](../../config.toml) e carregada pelo módulo [`src/config/`](../../src/config/index.ts). Não são usados variáveis de ambiente ou outros arquivos de configuração.
 
 ## 📦 Instalação
 
@@ -75,26 +78,31 @@ Veja como criar um serviço systemd para rodar o proxy automaticamente no Linux 
 http-proxy/
 ├── src/
 │   ├── config/
-│   │   ├── config.ts         # Carrega configuração do config.toml
-│   │   └── loadConfig.ts     # Carrega e valida o config.toml
+│   │   ├── index.ts      # Carrega, valida e normaliza o config.toml
+│   │   ├── loader.ts     # Carrega e faz o parse do config.toml
+│   │   ├── mapper.ts     # Normaliza valores do config
+│   │   ├── schema.ts     # Tipos para configuração
+│   │   └── validator.ts  # Valida campos obrigatórios
 │   ├── core/
-│   │   ├── logger.ts         # Configuração do logger Winston
-│   │   └── server.ts         # Lógica principal do servidor proxy
+│   │   ├── logger.ts     # Configuração do logger Winston
+│   │   └── server.ts     # Lógica principal do servidor proxy
 │   └── types/
-│       └── config.d.ts       # Tipos para configuração
-├── tests/                    # Testes do proxy e benchmark
+│       └── config.d.ts   # Tipos legacy/compatibilidade
+├── tests/
 │   ├── testProxy.ts
 │   └── testProxyBenchmark.ts
-├── config.toml               # Arquivo principal de configuração
-├── config.example.toml       # Exemplo de configuração
-├── logs/                     # Arquivos de log
+├── config.toml
+├── config.example.toml
+├── logs/
 │   └── proxy.log
 ├── package.json
 ├── pnpm-lock.yaml
 ├── tsconfig.json
 └── docs/
+    ├── LINUX-SERVICE.md
     └── pt-br/
-        └── README.md         # Documentação em português brasileiro
+        ├── LINUX-SERVICE.md
+        └── README.md
 ```
 
 ## 🤝 Contribuição
