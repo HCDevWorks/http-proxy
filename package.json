@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "tsx ./src/index.ts",
     "build": "tsc",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit -p .",
     "start": "node ./dist/index.js",
     "test:proxy": "tsx tests/testProxy.ts",
     "test:benchmark": "tsx tests/testProxyBenchmark.ts"
@@ -22,10 +25,18 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@eslint/js": "^9.25.1",
     "@types/express": "^5.0.1",
     "@types/node": "^22.15.2",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
     "axios": "^1.9.0",
+    "eslint": "^9.25.1",
+    "globals": "^16.0.0",
     "https-proxy-agent": "^7.0.6",
+    "husky": "^9.1.7",
     "typescript": "^5.8.3"
   }
 }
