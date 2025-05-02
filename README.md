@@ -78,16 +78,13 @@ See how to create a systemd service to run the proxy automatically on Linux in [
 http-proxy/
 ├── src/
 │   ├── config/
-│   │   ├── index.ts      # Loads, validates, and maps config.toml
-│   │   ├── loader.ts     # Loads and parses config.toml
-│   │   ├── mapper.ts     # Maps and normalizes config values
-│   │   ├── schema.ts     # Type definitions for config
-│   │   └── validator.ts  # Validates required config fields
+│   │   ├── index.ts      # Loads and exports the validated config object
+│   │   ├── loader.ts     # Loads and parses config.toml, validates with Zod
+│   │   └── schema.ts     # Zod schema and types for config
 │   ├── core/
 │   │   ├── logger.ts     # Winston logger configuration
 │   │   └── server.ts     # Main proxy server logic
-│   └── types/
-│       └── config.d.ts   # Legacy/compat type definitions
+│   └── index.ts          # Entry point
 ├── tests/
 │   ├── testProxy.ts
 │   └── testProxyBenchmark.ts

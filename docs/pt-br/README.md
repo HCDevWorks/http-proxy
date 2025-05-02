@@ -78,16 +78,13 @@ Veja como criar um serviço systemd para rodar o proxy automaticamente no Linux 
 http-proxy/
 ├── src/
 │   ├── config/
-│   │   ├── index.ts      # Carrega, valida e normaliza o config.toml
-│   │   ├── loader.ts     # Carrega e faz o parse do config.toml
-│   │   ├── mapper.ts     # Normaliza valores do config
-│   │   ├── schema.ts     # Tipos para configuração
-│   │   └── validator.ts  # Valida campos obrigatórios
+│   │   ├── index.ts      # Carrega e exporta o objeto de configuração validado
+│   │   ├── loader.ts     # Carrega e faz o parse do config.toml, valida com Zod
+│   │   └── schema.ts     # Schema Zod e tipos para configuração
 │   ├── core/
 │   │   ├── logger.ts     # Configuração do logger Winston
 │   │   └── server.ts     # Lógica principal do servidor proxy
-│   └── types/
-│       └── config.d.ts   # Tipos legacy/compatibilidade
+│   └── index.ts          # Ponto de entrada
 ├── tests/
 │   ├── testProxy.ts
 │   └── testProxyBenchmark.ts
