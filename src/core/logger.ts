@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { createLogger, format, transports } from 'winston';
-import { config } from '../config/config';
+import { config } from '../config/';
 
 const logsDir = path.join(__dirname, '..', '..', 'logs');
 
@@ -20,22 +20,22 @@ const baseLogger = createLogger({
   transports: [],
 });
 
-if (config.enableLogs) {
+if (config.logging?.enableLogs) {
   baseLogger.add(new transports.Console({ level: 'info' }));
   baseLogger.add(new transports.File({ filename: path.join(logsDir, 'proxy.log'), level: 'info' }));
-} else if (config.enableErrorLogs) {
+} else if (config.logging?.enableErrorLogs) {
   baseLogger.add(new transports.Console({ level: 'error' }));
   baseLogger.add(new transports.File({ filename: path.join(logsDir, 'proxy.log'), level: 'error' }));
 }
 
 export const logger = {
   info: (message: string) => {
-    if (config.enableLogs) {
+    if (config.logging?.enableLogs) {
       baseLogger.info(message);
     }
   },
   error: (message: string) => {
-    if (config.enableErrorLogs) {
+    if (config.logging?.enableErrorLogs) {
       baseLogger.error(message);
     }
   },

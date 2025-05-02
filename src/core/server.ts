@@ -1,5 +1,5 @@
 import { PrepareRequestFunctionOpts, Server } from 'proxy-chain';
-import { config } from '../config/config';
+import { config } from '../config/';
 import { logger } from './logger';
 
 const getHostFromRawHeaders = (rawHeaders: string[] = []): string | null => {
@@ -12,12 +12,12 @@ const getHostFromRawHeaders = (rawHeaders: string[] = []): string | null => {
 };
 
 const isHostAllowed = (host: string) => {
-  return config.allowedHosts.some(allowed => host.includes(allowed));
+  return config.allowed_hosts?.hosts?.some(allowed => host.includes(allowed));
 };
 
 export const startServer = async () => {
   const server = new Server({
-    port: config.port,
+    port: config.server.port,
 
     prepareRequestFunction: ({ request }: PrepareRequestFunctionOpts) => {
       try {
@@ -39,7 +39,7 @@ export const startServer = async () => {
         const decoded = Buffer.from(encodedCredentials || '', 'base64').toString();
         const [username, password] = decoded.split(':');
 
-        if (username !== config.proxyUsername || password !== config.proxyPassword) {
+        if (username !== config.auth.username || password !== config.auth.password) {
           logger.error(`[PROXY] Unauthorized access attempt from ${clientIp} (invalid credentials).`);
           return {
             failMsg: 'Invalid Proxy Authentication',
@@ -74,7 +74,7 @@ export const startServer = async () => {
   });
 
   server.listen(() => {
-    logger.info(`[PROXY] Proxy server is running on port ${config.port}`);
+    logger.info(`[PROXY] Proxy server is running on port ${config.server.port}`);
   });
 
   server.on('requestFailed', (context) => {
