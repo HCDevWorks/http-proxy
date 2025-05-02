@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "packageManager": "pnpm@10.6.4",
   "dependencies": {
     "proxy-chain": "^2.5.8",
