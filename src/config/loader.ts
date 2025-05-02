@@ -1,14 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 import { parse } from 'smol-toml';
-import type { Config } from './schema';
+import { Config, ConfigSchema } from './schema';
 
 export function loadConfigFromToml(filePath = 'config.toml'): Config {
   const absolutePath = path.resolve(filePath);
 
   if (!fs.existsSync(absolutePath)) {
     throw new Error(
-      `[ERROR] config.toml not found at ${absolutePath}` +
+      `[ERROR] config.toml not found at ${absolutePath}. ` +
       'Please create the file based on config.example.toml.'
     );
   }
@@ -21,9 +21,13 @@ export function loadConfigFromToml(filePath = 'config.toml'): Config {
     throw new Error(`[ERROR] Failed to parse config.toml: ${(error as Error).message}`);
   }
 
-  if (!parsed || typeof parsed !== 'object') {
-    throw new Error('[ERROR] config.toml is empty or invalid.');
+  const result = ConfigSchema.safeParse(parsed);
+  if (!result.success) {
+    throw new Error(
+      '[ERROR] config.toml validation failed:\n' +
+      result.error.errors.map(e => `- ${e.path.join('.')}: ${e.message}`).join('\n')
+    );
   }
 
-  return parsed as Config;
+  return result.data;
 }
