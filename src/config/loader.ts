@@ -23,10 +23,11 @@ export function loadConfigFromToml(filePath = 'config.toml'): Config {
 
   const result = ConfigSchema.safeParse(parsed);
   if (!result.success) {
-    throw new Error(
+    console.log(
       '[ERROR] config.toml validation failed:\n' +
       result.error.errors.map(e => `- ${e.path.join('.')}: ${e.message}`).join('\n')
     );
+    process.exit(1);
   }
 
   return result.data;

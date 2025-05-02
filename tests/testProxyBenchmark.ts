@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { HttpsProxyAgent } from 'https-proxy-agent';
-import { config } from '../src/config/config';
+import { config } from '../src/config';
 
-const proxyUrl = `http://${config.proxyUsername}:${config.proxyPassword}@localhost:${config.port}`;
+const proxyUrl = `http://${config.auth.username}:${config.auth.password}@localhost:${config.server.port}`;
 
 const httpsAgent = new HttpsProxyAgent(proxyUrl);
 
