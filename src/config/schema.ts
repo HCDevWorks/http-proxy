@@ -13,7 +13,10 @@ export const ConfigSchema = z.object({
     password: z.string(),
   }),
   allowed_hosts: z.object({
-    hosts: z.array(z.string().transform(h => h.trim().toLowerCase())).default([]),
+    hosts: z.union([
+      z.array(z.string().transform(h => h.trim().toLowerCase())),
+      z.string().refine(val => val === '*', { message: 'If hosts is a string, it must be "*".' })
+    ]),
   }),
 });
 
