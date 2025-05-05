@@ -12,7 +12,12 @@ const getHostFromRawHeaders = (rawHeaders: string[] = []): string | null => {
 };
 
 const isHostAllowed = (host: string) => {
-  return config.allowed_hosts?.hosts?.some(allowed => host.includes(allowed));
+  const allowed = config.allowed_hosts?.hosts;
+  if (allowed === '*') return true;
+  if (Array.isArray(allowed)) {
+    return allowed.some(allowedHost => host.includes(allowedHost));
+  }
+  return false;
 };
 
 export const startServer = async () => {

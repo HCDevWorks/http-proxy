@@ -54,7 +54,13 @@ Um servidor proxy HTTP robusto e configurável, desenvolvido em TypeScript, com 
 
    [allowed_hosts]
    hosts = ["google.com", "youtube.com"]
+   # Ou para permitir todos os hosts:
+   # hosts = "*"
    ```
+
+> **Atenção:**  
+> Para permitir conexões de qualquer host, defina `hosts = "*"` em `[allowed_hosts]`.  
+> Para restringir, use uma lista de domínios, como `hosts = ["google.com", "youtube.com"]`.
 
 ## 🛠️ Uso
 
