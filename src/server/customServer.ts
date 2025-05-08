@@ -1,8 +1,8 @@
 import { authenticateProxyRequest } from '@/core/auth';
 import { getHostFromRawHeaders } from '@/core/utils';
 import { PrepareRequestFunctionOpts, Server } from 'proxy-chain';
-import { config } from '../config';
-import { logger } from '../core/logger';
+import { config } from '@/config';
+import { logger } from '@/core/logger';
 
 type ServerOptions = ConstructorParameters<typeof Server>[0];
 
