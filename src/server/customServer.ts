@@ -1,3 +1,4 @@
+import { authenticateProxyRequest } from '@/core/auth';
 import { getHostFromRawHeaders } from '@/core/utils';
 import { PrepareRequestFunctionOpts, Server } from 'proxy-chain';
 import { config } from '../config';
@@ -19,25 +20,11 @@ export class CustomProxyServer extends Server {
       const host = getHostFromRawHeaders(rawHeaders);
       const clientIp = request.socket?.remoteAddress || 'Unknown IP';
 
-      const authorizationHeaderIndex = rawHeaders.findIndex(h => h.toLowerCase() === 'proxy-authorization');
-      if (authorizationHeaderIndex === -1) {
-        logger.error(`[PROXY] Unauthorized access attempt from ${clientIp} (missing credentials).`);
+      const authResult = authenticateProxyRequest(rawHeaders, clientIp);
+      if (!authResult.success) {
         return {
-          failMsg: 'Proxy Authentication Required',
-          statusCode: 407,
-        };
-      }
-
-      const authValue = rawHeaders[authorizationHeaderIndex + 1];
-      const encodedCredentials = authValue?.split(' ')[1];
-      const decoded = Buffer.from(encodedCredentials || '', 'base64').toString();
-      const [username, password] = decoded.split(':');
-
-      if (username !== config.auth.username || password !== config.auth.password) {
-        logger.error(`[PROXY] Unauthorized access attempt from ${clientIp} (invalid credentials).`);
-        return {
-          failMsg: 'Invalid Proxy Authentication',
-          statusCode: 407,
+          failMsg: authResult.failMsg,
+          statusCode: authResult.statusCode,
         };
       }
 
