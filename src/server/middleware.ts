@@ -1,5 +1,12 @@
 import { PrepareRequestFunctionOpts, PrepareRequestFunctionResult } from 'proxy-chain';
 
+/**
+ * * Middleware function type for proxy middleware.
+ * * @param ctx - The context object containing request and response information.
+ * * @param next - A function to call the next middleware in the chain.
+ * * @returns A promise that resolves to a `PrepareRequestFunctionResult` or undefined.
+ */
+
 export type ProxyMiddleware = (
   ctx: PrepareRequestFunctionOpts,
   next: () => Promise<PrepareRequestFunctionResult | undefined>

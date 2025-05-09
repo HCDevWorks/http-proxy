@@ -13,6 +13,11 @@ const middlewares: ProxyMiddleware[] = [
 
 const composed = compose(middlewares);
 
+/**
+ * Custom proxy server class that extends the proxy-chain Server class.
+ * It allows for custom middleware to be applied to the request handling process.
+ */
+
 export class CustomProxyServer extends Server {
   constructor(options: ServerOptions) {
     super({
